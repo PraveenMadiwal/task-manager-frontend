@@ -1,67 +1,39 @@
-// src/components/TaskForm.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from './TaskSlice';
 
-const TaskForm = ({ onTaskAdd }) => {
+export default function TaskForm() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
-
-    const newTask = {
-      title,
-      description,
-      completed: false,
-    };
-
-    try {
-      const response = await fetch('http://localhost:8080/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTask),
-      });
-
-      if (response.ok) {
-        const savedTask = await response.json();
-        onTaskAdd(savedTask);
-        setTitle('');
-        setDescription('');
-      } else {
-        console.error('Failed to create task');
-      }
-    } catch (error) {
-      console.error('Error creating task:', error);
-    }
+    if (!title) return;
+    dispatch(addTask({ title, description }));
+    setTitle('');
+    setDescription('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md mb-6 w-full max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-center">Add New Task</h2>
+    <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow mb-4">
+      <h2 className="text-xl font-bold mb-2">Add Task</h2>
       <input
         type="text"
+        className="border p-2 w-full mb-2"
         placeholder="Task Title"
-        className="w-full mb-3 p-2 border rounded"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
       />
       <textarea
+        className="border p-2 w-full mb-2"
         placeholder="Task Description"
-        className="w-full mb-3 p-2 border rounded"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
-      >
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
         Add Task
       </button>
     </form>
   );
-};
-
-export default TaskForm;
+}

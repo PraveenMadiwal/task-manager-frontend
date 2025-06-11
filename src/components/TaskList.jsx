@@ -1,48 +1,41 @@
-// src/components/TaskList.js
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleComplete, deleteTask } from './TaskSlice';
 
-const TaskList = ({ tasks, onToggle, onDelete }) => {
+export default function TaskList() {
+  const tasks = useSelector(state => state.tasks);
+  const dispatch = useDispatch();
+
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      {tasks.length === 0 ? (
-        <p className="text-center text-gray-500">No tasks available.</p>
-      ) : (
-        <ul className="space-y-4">
-          {tasks.map((task) => (
-            <li
-              key={task.id}
-              className="flex items-start justify-between bg-white p-4 rounded shadow hover:shadow-lg"
+    <div className="space-y-3">
+      <h2 className="text-xl font-bold mb-2">Task List</h2>
+      {tasks.map(task => (
+        <div
+          key={task.id}
+          className={`p-4 rounded shadow border flex justify-between items-start ${
+            task.completed ? 'bg-green-100' : 'bg-yellow-100'
+          }`}
+        >
+          <div>
+            <h3 className="text-lg font-semibold">{task.title}</h3>
+            <p>{task.description}</p>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => dispatch(toggleComplete(task.id))}
+              className="px-3 py-1 bg-blue-500 text-white rounded"
             >
-              <div className="flex-grow">
-                <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-gray-400' : ''}`}>
-                  {task.title}
-                </h3>
-                <p className={`text-sm ${task.completed ? 'line-through text-gray-400' : ''}`}>
-                  {task.description}
-                </p>
-              </div>
-              <div className="flex items-center space-x-2 ml-4">
-                <button
-                  onClick={() => onToggle(task.id)}
-                  className={`px-3 py-1 text-sm rounded ${
-                    task.completed ? 'bg-yellow-400' : 'bg-green-500'
-                  } text-white hover:opacity-90`}
-                >
-                  {task.completed ? 'Undo' : 'Complete'}
-                </button>
-                <button
-                  onClick={() => onDelete(task.id)}
-                  className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:opacity-90"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+              {task.completed ? 'Undo' : 'Complete'}
+            </button>
+            <button
+              onClick={() => dispatch(deleteTask(task.id))}
+              className="px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
-};
-
-export default TaskList;
+}
