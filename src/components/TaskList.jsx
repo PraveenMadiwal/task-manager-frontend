@@ -52,6 +52,7 @@ export default function TaskList() {
               </div>
             )}
           </div>
+
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
             <button
               onClick={() => dispatch(toggleComplete(task.id))}
@@ -59,26 +60,31 @@ export default function TaskList() {
             >
               {task.completed ? 'Undo' : 'Complete'}
             </button>
+
             <button
               onClick={() => dispatch(deleteTask(task.id))}
               className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
             >
               Delete
             </button>
-            {editingId === task.id ? (
-              <button
-                onClick={handleEditSave}
-                className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded"
-              >
-                Done
-              </button>
-            ) : (
-              <button
-                onClick={() => handleEditClick(task)}
-                className="px-3 py-1 bg-gray-500 hover:bg-gray-600 text-white rounded"
-              >
-                Edit
-              </button>
+
+            {/* 👇 Show Edit/Done only if task is NOT completed */}
+            {!task.completed && (
+              editingId === task.id ? (
+                <button
+                  onClick={handleEditSave}
+                  className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded"
+                >
+                  Done
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleEditClick(task)}
+                  className="px-3 py-1 bg-gray-500 hover:bg-gray-600 text-white rounded"
+                >
+                  Edit
+                </button>
+              )
             )}
           </div>
         </div>
