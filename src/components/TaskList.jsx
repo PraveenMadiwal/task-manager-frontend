@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleComplete, deleteTask, editTask } from './TaskSlice';
+import {
+  getTasks,
+  createTask,
+  editTask,
+  deleteTask,
+  toggleCompleteLocal
+} from '../components/TaskSliceBackend';
 
 export default function TaskList() {
   const tasks = useSelector(state => state.tasks);
@@ -60,6 +67,15 @@ export default function TaskList() {
             >
               {task.completed ? 'Undo' : 'Complete'}
             </button>
+                          {/* <button
+                onClick={() => {
+                  dispatch(toggleCompleteLocal(task.id));
+                  dispatch(editTask({ id: task.id, title: task.title, description: task.description, completed: !task.completed }));
+                }}
+                className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded"
+              >
+                {task.completed ? 'Undo' : 'Complete'}
+              </button> */}
 
             <button
               onClick={() => dispatch(deleteTask(task.id))}
@@ -68,7 +84,7 @@ export default function TaskList() {
               Delete
             </button>
 
-            {/* 👇 Show Edit/Done only if task is NOT completed */}
+           { /*  Show Edit/Done only if task is NOT completed */}
             {!task.completed && (
               editingId === task.id ? (
                 <button

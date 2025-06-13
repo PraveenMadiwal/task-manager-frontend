@@ -17,8 +17,8 @@ export default function TaskForm() {
 
   return (
     <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow mb-4">
-      <h2 className="text-xl left-5 flex font-bold mt-5 mb-2">Add Task</h2>
-      <div className="flex mt-5 ml-5 mb-5 bg-slate-300 w-full">
+      <h2 className="text-xl flex justify-center left-5 font-bold mt-5 mb-2">Add Task</h2>
+      <div className="flex mb-5 rounded-md bg-gray-100 shadow-lg shadow-gray-500/50 w-full">
       <input
         type="text"
         className="border m-5 p-2 w-full mb-2"
@@ -33,7 +33,7 @@ export default function TaskForm() {
         onChange={(e) => setDescription(e.target.value)}
       />
       </div>
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+      <button type="submit" className="bg-blue-500 shadow-lg shadow-blue-500/50 text-white px-4 py-2 rounded">
         Add Task
       </button>
     </form>
